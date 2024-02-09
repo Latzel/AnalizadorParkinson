@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="PDcontext">
+    <EntitySetMapping Name="tbl_TipoParkinson">
+      <EntityTypeMapping TypeName="Model1.tbl_TipoParkinson">
+        <MappingFragment StoreEntitySet="tbl_TipoParkinson">
+          <ScalarProperty Name="idTipoParkinson" ColumnName="idTipoParkinson" />
+          <ScalarProperty Name="Tipo_Parkinson" ColumnName="Tipo_Parkinson" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_ImagenesPacientes">
+      <EntityTypeMapping TypeName="Model1.tbl_ImagenesPacientes">
+        <MappingFragment StoreEntitySet="tbl_ImagenesPacientes">
+          <ScalarProperty Name="fechaCargada" ColumnName="fechaCargada" />
+          <ScalarProperty Name="idPaciente" ColumnName="idPaciente" />
+          <ScalarProperty Name="fileName" ColumnName="fileName" />
+          <ScalarProperty Name="idImagenPaciente" ColumnName="idImagenPaciente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_ObtenerImagenes" FunctionName="Model1.Store.sp_ObtenerImagenes">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model1.sp_ObtenerImagenes_Result">
+          <ScalarProperty Name="fileName" ColumnName="fileName" />
+          <ScalarProperty Name="idPaciente" ColumnName="idPaciente" />
+          <ScalarProperty Name="fechaCargada" ColumnName="fechaCargada" />
+          <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+          <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+          <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ObtenerImagenes_V2" FunctionName="Model1.Store.sp_ObtenerImagenes_V2">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model1.sp_ObtenerImagenes_V2_Result">
+          <ScalarProperty Name="fileName" ColumnName="fileName" />
+          <ScalarProperty Name="idPaciente" ColumnName="idPaciente" />
+          <ScalarProperty Name="fechaCargada" ColumnName="fechaCargada" />
+          <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+          <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+          <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="tbl_Pacientes">
+      <EntityTypeMapping TypeName="Model1.tbl_Pacientes">
+        <MappingFragment StoreEntitySet="tbl_Pacientes">
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Genero" ColumnName="Genero" />
+          <ScalarProperty Name="UltimoAnalisis" ColumnName="UltimoAnalisis" />
+          <ScalarProperty Name="idTipoParkinson" ColumnName="idTipoParkinson" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+          <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+          <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+          <ScalarProperty Name="idPaciente" ColumnName="idPaciente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_ObtenerImagenes_V3" FunctionName="Model1.Store.sp_ObtenerImagenes_V3">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model1.sp_ObtenerImagenes_V3_Result">
+          <ScalarProperty Name="idImagenPaciente" ColumnName="idImagenPaciente" />
+          <ScalarProperty Name="fileName" ColumnName="fileName" />
+          <ScalarProperty Name="idPaciente" ColumnName="idPaciente" />
+          <ScalarProperty Name="fechaCargada" ColumnName="fechaCargada" />
+          <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+          <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+          <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

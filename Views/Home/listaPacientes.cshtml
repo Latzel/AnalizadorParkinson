@@ -1,0 +1,72 @@
+﻿@*@{
+        ViewBag.Title = "listaPacientes";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h2>listaPacientes</h2>*@
+
+<table class="table table-condensed">
+
+    <tr>
+        <th>Nombre Paciente</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Género</th>
+        <th>Fecha Nacimiento</th>
+        <th>Estado</th>
+        <th>Último Análisis</th>
+        @*<th>Analizar</th>
+            <th>Editar</th>
+            <th>Eliminar</th>*@
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @if (item.Activo == 1)
+            {
+                <td> @item.NombrePaciente </td>
+                <td> @item.ApellidoPaterno </td>
+                <td> @item.ApellidoMaterno </td>
+                <td> @item.Genero</td>
+                <td> @item.Edad.ToString("dd/MM/yyy") </td>
+                <td> @item.tbl_TipoParkinson.Tipo_Parkinson</td>
+                if (item.UltimoAnalisis == null)
+                {
+                    <td>Sin análisis previo</td>
+                }
+                else
+                {
+                    <td> @item.UltimoAnalisis.ToString("dd/MM/yyy")</td>
+                }
+                <th> <a href="~/home/PRUEBAimg?idPaciente=@item.idPaciente" class="btn btn-outline-success">Analizar</a></th>
+                <th> <a href="~/home/formularioPaciente?idPaciente=@item.idPaciente" class="btn btn-info">Editar</a></th>
+                @*<th> <a href="~/home/Eliminar?idPaciente=@item.idPaciente" class="btn btn-danger">Eliminar</a></th>*@
+                <th> <a href="#" class="btn btn-danger" onclick="confirmarEliminacion('@item.idPaciente')">Eliminar</a></th>
+            }
+
+        </tr>
+    }
+
+
+</table>
+
+<script>
+    function confirmarEliminacion(idPaciente) {
+        var confirmacion = confirm("¿Estás seguro de que quieres eliminar este paciente?");
+
+        if (confirmacion) {
+            // Redireccionar a la acción de eliminar si se confirma
+            window.location.href = "/home/Eliminar?idPaciente=" + idPaciente;
+        }
+    }
+</script>
+
+
+
+<br />
+<br />
+<a href="~/home/formularioPaciente" class="btn btn-secondary">Insertar</a>
+<br />
+<br />
+

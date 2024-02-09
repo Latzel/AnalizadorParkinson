@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Imagen</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body>
+
+    <header class="flex items-center justify-center h-20 px-4 bg-blue-900 dark:bg-gray-800">
+        <h1 class="text-3xl font-bold text-white dark:text-gray-100">Análisis de Prueba</h1>
+    </header>
+
+    <br />
+
+    <div class="flex items-center justify-center" style="margin-top:auto">
+
+        <form action="#" method="post" enctype="multipart/form-data" id="upload-form">
+            <input type="file" name="image" id="sighPicture" accept="image/*" onchange="load_ImgP(event)" multiple="multiple" />
+        </form>
+
+
+    </div>
+
+    <br />
+    <br />
+
+    <div class="flex items-center justify-center">
+
+        <img id="previewSightingReg" style="width: 320px; height: 260px;">
+
+    </div>
+
+
+    <br />
+    <br />
+
+    <div class="flex items-center justify-center">
+
+        <button onclick="enviarRespuesta()" class="whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Obtener Respuesta
+        </button>
+
+    </div>
+
+    <br />
+
+    @*<textarea id="respuestaTextBox" rows="1" cols="8" readonly></textarea>*@
+    <div class="flex items-center justify-center">
+
+        <input type="text" id="respuestaTextBox" readonly />
+
+    </div>
+
+
+
+
+    <br />
+    <br />
+
+    <div style='text-align:right'>
+        <a href="~/home/Index" class="btn btn-link" style="width: fit-content; height: fit-content; font-size: 80px;"> ↵ </a>
+    </div>
+
+
+    <script>
+
+
+
+        var load_ImgP = function (event) {
+            let output = document.getElementById('previewSightingReg');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+
+        const inputImagen = document.getElementById("sighPicture");
+        const miImagen = document.getElementById("previewSightingReg");
+        const respuestaTextBox = document.getElementById("respuestaTextBox");
+
+        let classifier1;
+        let imageModelURL1 = 'https://teachablemachine.withgoogle.com/models/ZtxylqW4o/'; //MODELO FINAL
+        let imgPAR;
+        let label1 = "";
+
+        function preload() {
+            classifier1 = ml5.imageClassifier(imageModelURL1 + 'model.json', { cors: true });
+            imgPAR = document.getElementById("previewSightingReg");
+        }
+
+        function setup() {
+            createCanvas(320, 260);
+        }
+
+        function classifyImage1() {
+            classifier1.classify(imgPAR, gotResult1);
+        }
+
+        function gotResult1(error, results) {
+            if (error) {
+                console.error(error);
+                return;
+            }
+            label1 = results[0].label;
+
+            if (label1 == "Sanos") {
+                console.log("1-1-" + "Sin evidencia");
+                label1 = "Sin evidencia"
+
+            } else if (label1 == "Parkinson") {
+                console.log("1-2-" + "Indicios de Parkinson");
+                label1 = "Indicios de Parkinson"
+            }
+
+            // Actualizar el valor del textbox con la respuesta
+            respuestaTextBox.value = label1;
+
+        }
+
+        function enviarRespuesta() {
+            // Clasificar la imagen y actualizar el cuadro de texto
+            classifyImage1();
+
+        }
+
+                                                    //const fechaFormato = `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()}`;
+
+
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+﻿@*@{
+        ViewBag.Title = "CargarIMG";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h2>CargarIMG</h2>*@
+
+<form method="POST" enctype="multipart/form-data">
+    @*@csrf*@
+    <div class="col-xxl-12" style="margin-top: 8px;margin-bottom: 8px;">
+        <div class="row">
+            <div class="col-md-12" style="text-align: left;">
+                <label class="form-label" style="text-align: left;margin-left: 8px;">Nombre del Paciente</label>
+                <div class="input-group" style="border-radius: 8px;border-style: none;">
+                    <input type="text" class="form-control" style="background: var(--bs-light);border-radius: 20px;border-style: none;" name="nombre" id="nombreP" list="nombrePaciente" placeholder="Apellido Paterno   Apellido Materno    Nombre(s)" required>
+                    <datalist id="nombrePaciente">
+                        {% for paciente in pacientes %}
+                        @*<option value="{{bee.nombreP}}"></option>*@
+                        {% endfor %}
+                    </datalist>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-12" style="margin-top: 8px;margin-bottom: 8px;">
+        <div class="row">
+            <div class="col-md-12" style="text-align: left;">
+                <label class="form-label" style="text-align: left;margin-left: 8px;">Imagen a analizar</label>
+                <div class="input-group" style="border-radius: 8px;border-style: none;">
+                    <input type="file" class="form-control" style="border-style: none;border-radius: 20px;background: var(--bs-light);" name="sighPicture" id="sighPicture" onchange="load_ImgP(event)" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="number" name="sighLat" id="sighLat" readonly hidden required>
+    <input type="number" name="sighLng" id="sighLng" readonly hidden required>
+
+    <div class="col-xxl-12" style="margin-top: 8px;margin-bottom: 8px;">
+        <div class="row">
+            <div class="col-sm-6 col-md-6" style="text-align: left;">
+                <label class="form-label" style="text-align: left;margin-left: 8px;">Estado del Paciente</label>
+                <div class="input-group" style="border-radius: 8px;border-style: none;">
+                    <input type="text" class="form-control" style="background: var(--bs-light);border-radius: 20px;border-style: none;" name="estadopaciente" id="estadoP" @*list="list2familyName"*@ onchange="autoFieldSubfamily()" placeholder="Esperando Respuesta" required>
+                    <datalist id="list2familyName">
+                        <!-- Aquí puedes agregar opciones si es necesario -->
+                    </datalist>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <a href="#" class="btn btn-info">Analizar Paciente</a>
+    <br />
+    <br />
+</form>
+
+<script type="text/javascript">
+    const inputImagen = document.getElementById("sighPicture");
+    const miImagen = document.getElementById("previewSightingReg");
+
+    inputImagen.addEventListener("change", function () {
+        const archivo = inputImagen.files[0];
+        const lector = new FileReader();
+        lector.addEventListener("load", function () {
+            miImagen.src = lector.result;
+            classifyImage1();
+        }, false);
+        if (archivo) {
+            lector.readAsDataURL(archivo);
+        }
+    });
+
+
+    let classifier1;
+
+    let imageModelURL1 = 'https://teachablemachine.withgoogle.com/models/c04LR6wIz/'; //MODELOS PROVISIONAL
+
+    // Imagen a cargada
+    let imgPAR;
+
+    // Etiqueta de resultados
+    let label1 = "";
+
+    // Carga de modelos
+    function preload() {
+
+        // Clasificador de: es un insecto o no lo es - modelo
+        classifier1 = ml5.imageClassifier(imageModelURL1 + 'model.json', { cors: true });
+        // Creación de variable en base al elemento con id img1
+        imgPAR = document.getElementById("previewSightingReg");
+        console.log(imgPAR);
+    }
+    // Creación de lienzo a analizar del modelo en dimensiones de 320 pixels vs 260 pixels
+    function setup() {
+        createCanvas(320, 260);
+
+        // Empieza a clasificar si es un insecto
+        classifyImage1();
+    }
+    // Se obtiene una predicción de la imagen
+    function classifyImage1() {
+        classifier1.classify(imagP, gotResult1);
+    }
+    // Se obtienen los resultados de la imagen
+    function gotResult1(error, results) {
+        // En caso de error
+        if (error) {
+            console.error(error);
+            return;
+        }
+        // Resultados, asignación de valor a label
+        label1 = results[0].label;
+        console.log(label1)
+
+        if (label1 == "No tiene Parkinson") {
+/*            document.getElementById("nombreP").value = label1;*/
+            console.log("1-1-" + label1);
+            // Comienza a clasificar si es una abeja o otro insecto
+            //classifyImage2();
+        }
+        else if (label1 == "Tiene Parkinson") {
+            //document.getElementById("nombreP").value = label1;
+            //document.getElementById("apePat").value = "";
+            //document.getElementById("apeMat").value = "";
+            //document.getElementById("edadP").value = "";
+            
+            //document.getElementById("fieldsting").value = "";
+            //document.getElementById("speciesName").value = "";
+            //document.getElementById("fieldnative").value = "";
+            console.log("1-2-" + label1);
+            return;
+        }
+
+    }
+</script>
+

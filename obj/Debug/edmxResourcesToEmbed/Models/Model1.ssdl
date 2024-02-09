@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_ImagenesPacientes">
+    <Key>
+      <PropertyRef Name="idImagenPaciente" />
+    </Key>
+    <Property Name="idImagenPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fileName" Type="varchar" MaxLength="100" />
+    <Property Name="idPaciente" Type="int" />
+    <Property Name="fechaCargada" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tbl_Pacientes">
+    <Key>
+      <PropertyRef Name="idPaciente" />
+    </Key>
+    <Property Name="idPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombrePaciente" Type="varchar" MaxLength="50" />
+    <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" />
+    <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
+    <Property Name="Edad" Type="date" />
+    <Property Name="idTipoParkinson" Type="int" Nullable="false" />
+    <Property Name="UltimoAnalisis" Type="date" />
+    <Property Name="Genero" Type="varchar" MaxLength="50" />
+    <Property Name="Activo" Type="int" />
+  </EntityType>
+  <EntityType Name="tbl_TipoParkinson">
+    <Key>
+      <PropertyRef Name="idTipoParkinson" />
+    </Key>
+    <Property Name="idTipoParkinson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tipo_Parkinson" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK__tbl_Image__idPac__5DCAEF64">
+    <End Role="tbl_Pacientes" Type="Self.tbl_Pacientes" Multiplicity="0..1" />
+    <End Role="tbl_ImagenesPacientes" Type="Self.tbl_ImagenesPacientes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Pacientes">
+        <PropertyRef Name="idPaciente" />
+      </Principal>
+      <Dependent Role="tbl_ImagenesPacientes">
+        <PropertyRef Name="idPaciente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_TipoParkinson_tbl_Pacientes">
+    <End Role="tbl_TipoParkinson" Type="Self.tbl_TipoParkinson" Multiplicity="1" />
+    <End Role="tbl_Pacientes" Type="Self.tbl_Pacientes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_TipoParkinson">
+        <PropertyRef Name="idTipoParkinson" />
+      </Principal>
+      <Dependent Role="tbl_Pacientes">
+        <PropertyRef Name="idTipoParkinson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_ObtenerImagenes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPaciente" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ObtenerImagenes_V2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPaciente" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ObtenerImagenes_V3" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPaciente" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="tbl_ImagenesPacientes" EntityType="Self.tbl_ImagenesPacientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Pacientes" EntityType="Self.tbl_Pacientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_TipoParkinson" EntityType="Self.tbl_TipoParkinson" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tbl_Image__idPac__5DCAEF64" Association="Self.FK__tbl_Image__idPac__5DCAEF64">
+      <End Role="tbl_Pacientes" EntitySet="tbl_Pacientes" />
+      <End Role="tbl_ImagenesPacientes" EntitySet="tbl_ImagenesPacientes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_TipoParkinson_tbl_Pacientes" Association="Self.FK_tbl_TipoParkinson_tbl_Pacientes">
+      <End Role="tbl_TipoParkinson" EntitySet="tbl_TipoParkinson" />
+      <End Role="tbl_Pacientes" EntitySet="tbl_Pacientes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

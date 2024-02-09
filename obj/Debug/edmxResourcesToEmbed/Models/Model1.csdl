@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tbl_TipoParkinson">
+    <Key>
+      <PropertyRef Name="idTipoParkinson" />
+    </Key>
+    <Property Name="idTipoParkinson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tipo_Parkinson" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_Pacientes" Relationship="Model1.FK_tbl_TipoParkinson_tbl_Pacientes" FromRole="tbl_TipoParkinson" ToRole="tbl_Pacientes" />
+  </EntityType>
+  <EntityContainer Name="PDcontext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbl_TipoParkinson" EntityType="Self.tbl_TipoParkinson" />
+    <EntitySet Name="tbl_ImagenesPacientes" EntityType="Model1.tbl_ImagenesPacientes" />
+    <FunctionImport Name="sp_ObtenerImagenes" ReturnType="Collection(Model1.sp_ObtenerImagenes_Result)">
+      <Parameter Name="idPaciente" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_ObtenerImagenes_V2" ReturnType="Collection(Model1.sp_ObtenerImagenes_V2_Result)">
+      <Parameter Name="idPaciente" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="tbl_Pacientes" EntityType="Model1.tbl_Pacientes" />
+    <AssociationSet Name="FK__tbl_Image__idPac__5DCAEF64" Association="Model1.FK__tbl_Image__idPac__5DCAEF64">
+      <End Role="tbl_Pacientes" EntitySet="tbl_Pacientes" />
+      <End Role="tbl_ImagenesPacientes" EntitySet="tbl_ImagenesPacientes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_TipoParkinson_tbl_Pacientes" Association="Model1.FK_tbl_TipoParkinson_tbl_Pacientes">
+      <End Role="tbl_TipoParkinson" EntitySet="tbl_TipoParkinson" />
+      <End Role="tbl_Pacientes" EntitySet="tbl_Pacientes" />
+    </AssociationSet>
+    <FunctionImport Name="sp_ObtenerImagenes_V3" ReturnType="Collection(Model1.sp_ObtenerImagenes_V3_Result)">
+      <Parameter Name="idPaciente" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="tbl_ImagenesPacientes">
+    <Key>
+      <PropertyRef Name="idImagenPaciente" />
+    </Key>
+    <Property Name="idImagenPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="idPaciente" Type="Int32" />
+    <Property Name="fechaCargada" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tbl_Pacientes" Relationship="Model1.FK__tbl_Image__idPac__5DCAEF64" FromRole="tbl_ImagenesPacientes" ToRole="tbl_Pacientes" />
+  </EntityType>
+  <ComplexType Name="sp_ObtenerImagenes_Result">
+    <Property Type="String" Name="fileName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="idPaciente" Nullable="true" />
+    <Property Type="DateTime" Name="fechaCargada" Nullable="true" Precision="23" />
+    <Property Type="String" Name="NombrePaciente" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_ObtenerImagenes_V2_Result">
+    <Property Type="String" Name="fileName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="idPaciente" Nullable="true" />
+    <Property Type="DateTime" Name="fechaCargada" Nullable="true" Precision="23" />
+    <Property Type="String" Name="NombrePaciente" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <EntityType Name="tbl_Pacientes">
+    <Key>
+      <PropertyRef Name="idPaciente" />
+    </Key>
+    <Property Name="idPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombrePaciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Edad" Type="DateTime" Precision="0" />
+    <Property Name="idTipoParkinson" Type="Int32" Nullable="false" />
+    <Property Name="UltimoAnalisis" Type="DateTime" Precision="0" />
+    <Property Name="Genero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Activo" Type="Int32" />
+    <NavigationProperty Name="tbl_ImagenesPacientes" Relationship="Model1.FK__tbl_Image__idPac__5DCAEF64" FromRole="tbl_Pacientes" ToRole="tbl_ImagenesPacientes" />
+    <NavigationProperty Name="tbl_TipoParkinson" Relationship="Model1.FK_tbl_TipoParkinson_tbl_Pacientes" FromRole="tbl_Pacientes" ToRole="tbl_TipoParkinson" />
+  </EntityType>
+  <Association Name="FK__tbl_Image__idPac__5DCAEF64">
+    <End Type="Model1.tbl_Pacientes" Role="tbl_Pacientes" Multiplicity="0..1" />
+    <End Type="Model1.tbl_ImagenesPacientes" Role="tbl_ImagenesPacientes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Pacientes">
+        <PropertyRef Name="idPaciente" />
+      </Principal>
+      <Dependent Role="tbl_ImagenesPacientes">
+        <PropertyRef Name="idPaciente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_TipoParkinson_tbl_Pacientes">
+    <End Type="Model1.tbl_TipoParkinson" Role="tbl_TipoParkinson" Multiplicity="1" />
+    <End Type="Model1.tbl_Pacientes" Role="tbl_Pacientes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_TipoParkinson">
+        <PropertyRef Name="idTipoParkinson" />
+      </Principal>
+      <Dependent Role="tbl_Pacientes">
+        <PropertyRef Name="idTipoParkinson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_ObtenerImagenes_V3_Result">
+    <Property Type="Int32" Name="idImagenPaciente" Nullable="false" />
+    <Property Type="String" Name="fileName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="idPaciente" Nullable="true" />
+    <Property Type="DateTime" Name="fechaCargada" Nullable="true" Precision="23" />
+    <Property Type="String" Name="NombrePaciente" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+  </ComplexType>
+</Schema>

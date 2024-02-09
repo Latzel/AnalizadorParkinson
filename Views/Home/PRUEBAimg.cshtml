@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Imagen</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+</head>
+<body>
+    <header class="flex items-center justify-center h-20 px-4 bg-blue-900 dark:bg-gray-800">
+        <h1 class="text-3xl font-bold text-white dark:text-gray-100">Cargar Imágenes</h1>
+    </header>
+    <br />
+    <form action="#" method="post" enctype="multipart/form-data" id="upload-form">
+        <input type="file" name="image" id="sighPicture" accept="image/*" onchange="load_ImgP(event)" multiple="multiple" />
+    </form>
+    <br />
+    <img id="previewSightingReg" style="width: 320px; height: 260px; display:none">
+
+    <div id="PartialView_tabla">
+
+    </div>
+
+    <br />
+    <br />
+
+    @*<button onclick="enviarRespuesta()">Enviar Respuesta</button>*@
+
+    <button onclick="enviarRespuesta()" class="whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        Enviar Respuesta
+    </button>
+
+    @*<textarea id="respuestaTextBox" rows="1" cols="8" readonly></textarea>*@
+
+    @*<input type="text" id="respuestaTextBox" readonly />*@
+
+    <div style='text-align:right'>
+        <a href="~/home/listaPacientes" class="btn btn-link" style="width: fit-content; height: fit-content; font-size: 80px;"> ↵ </a>
+    </div>
+
+
+    <script>
+
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var load_ImgP = function (event) {
+            let output = document.getElementById('previewSightingReg');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+
+        const inputImagen = document.getElementById("sighPicture");
+        const miImagen = document.getElementById("previewSightingReg");
+        const respuestaTextBox = document.getElementById("respuestaTextBox");
+
+        let classifier1;
+        let imageModelURL1 = 'https://teachablemachine.withgoogle.com/models/ZtxylqW4o/'; //MODELOS FINAL
+        let imgPAR;
+        let label1 = "";
+
+        function preload() {
+            classifier1 = ml5.imageClassifier(imageModelURL1 + 'model.json', { cors: true });
+            imgPAR = document.getElementById("previewSightingReg");
+        }
+
+        function setup() {
+            createCanvas(320, 260);
+        }
+
+        function classifyImage1() {
+            classifier1.classify(imgPAR, gotResult1);
+        }
+
+        function gotResult1(error, results) {
+            if (error) {
+                console.error(error);
+                return;
+            }
+            label1 = results[0].label;
+
+            if (label1 == "Sanos") {
+                console.log("1-1-" + label1);
+                label1 = 2;
+            } else if (label1 == "Parkinson") {
+                console.log("1-2-" + label1);
+                label1 = 3;
+            }
+
+            // Actualizar el valor del textbox con la respuesta
+            /*            respuestaTextBox.value = "Se ha capturado la respuesta correctamente";*/
+
+            alert("Se ha capturado la respuesta correctamente\nPara conocer el resultado es necesario volver a la pestaña anterior");
+
+            guardarFechaAnalisis(@ViewBag.idPaciente, label1);
+        }
+
+        function enviarRespuesta() {
+            // Clasificar la imagen y actualizar el cuadro de texto
+            classifyImage1();
+
+        }
+
+
+
+
+        var UrlGuardarFechaA = '@Url.Action("guardarFechaAnalisis", "Home")'
+        var UrlUp = '@Url.Action("Upload", "Home")'
+        var UrlgetImagenes = '@Url.Action("ObtenerImagenes", "Home")'
+        var UrlEliminarImagen = '@Url.Action("EliminarIMG", "Home")'
+
+        function guardarFechaAnalisis(idPaciente, ResultadoAnalisis) {
+
+            var idPaciente = idPaciente;
+            var ResultadoAnalisis = ResultadoAnalisis;
+
+            lstFiles = null;
+            lstFiles = [];
+            var fileInput = document.getElementById('sighPicture');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+                //Appending each file to FormData object
+                var Files = {
+                    FileName: fileInput.files[i].name
+                }
+                lstFiles.push(Files);
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: UrlGuardarFechaA,
+                async: true,
+                data: {
+
+                    idPaciente: idPaciente,
+                    ResultadoAnalisis: ResultadoAnalisis,
+                    lstFiles: lstFiles
+                    //FechaAnalisis: new Date()
+
+
+                },
+                success: function (data) {
+
+                    var paciente = getParameterByName("paciente");
+                    var apellidoPaterno = getParameterByName("ApellidoPaterno");
+                    var apellidoMaterno = getParameterByName("ApellidoMaterno");
+
+                    Upload(data, paciente, apellidoPaterno, apellidoMaterno);
+                    getImagenes();
+                    $("#respuestaTextBox").val("");
+                    $("#sighPicture").val("");
+
+
+
+                    //alert("Registro guardado correctamente");
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+        function Upload(id, nombrePaciente, apellidoPaterno, apellidoMaterno) {
+
+
+            var formdata = new FormData(); //FormData object
+            var fileInput = document.getElementById('sighPicture');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+                //Appending each file to FormData object
+                /* formdata.append(id + "-" + nombrePaciente + "-" + apellidoPaterno + "-" + apellidoMaterno + "-" + fileInput.files[i].name, fileInput.files[i]);*/
+                 formdata.append(id + "-" + fileInput.files[i].name, fileInput.files[i]);
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', UrlUp, false);
+            xhr.send(formdata);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //alert(xhr.responseText);
+                }
+            }
+            return false;
+        }
+
+
+        function getImagenes() {
+
+            var idPaciente = getParameterByName("idPaciente");
+
+            $.ajax({
+                type: "POST",
+                url: UrlgetImagenes,
+                async: true,
+                data: {
+
+                    idPaciente: idPaciente
+                    //FechaAnalisis: new Date()AAFDS
+
+
+                },
+                success: function (data) {
+
+                    $("#PartialView_tabla").html(data);
+
+                    //alert("Registro guardado correctamente");
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+        window.onload = function () {
+            getImagenes();
+
+        };
+
+        function eliminarImagen(NombreImg, idImagenPaciente) {
+
+            var idPaciente = getParameterByName("idPaciente");
+
+            $.ajax({
+                type: "POST",
+                url: UrlEliminarImagen,
+                async: true,
+                data: {
+
+                    idPaciente: idPaciente,
+                    FileName: NombreImg,
+                    idImagenPaciente: idImagenPaciente
+
+
+                },
+                success: function (data) {
+
+                    getImagenes();
+
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
+</body>
+</html>

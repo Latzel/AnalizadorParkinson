@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9c4f0d25052a4a2da3c98058e9a32251" Name="Diagram1">
+        <EntityTypeShape EntityType="Model1.tbl_TipoParkinson" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.tbl_ImagenesPacientes" Width="1.5" PointX="5.25" PointY="1.5" />
+        <EntityTypeShape EntityType="Model1.tbl_Pacientes" Width="1.5" PointX="2.875" PointY="1.125" />
+        <AssociationConnector Association="Model1.FK__tbl_Image__idPac__5DCAEF64" />
+        <AssociationConnector Association="Model1.FK_tbl_TipoParkinson_tbl_Pacientes" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

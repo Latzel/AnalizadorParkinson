@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "formularioPaciente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+
+<header class="flex items-center justify-center h-20 px-4 bg-blue-900 dark:bg-gray-800">
+    <h1 class="text-3xl font-bold text-white dark:text-gray-100">Registro Pacientes</h1>
+</header>
+<br>
+<br>
+
+
+
+<script>
+
+
+    var UrlGuardarPaciente = '@Url.Action("guardarPaciente", "Home")';
+
+</script>
+
+
+
+<script src="~/Scripts/js_Pacientes.js"></script>
+
+<div class="row">
+    @*FORMULARIO cshtml*@
+
+    <br>
+    <br>
+    <br />
+    <br />
+
+    <div class="col-md-3">
+        <label>Nombre Paciente</label>
+        @if (ViewBag.Paciente != null)
+        {
+            <input type="text" id="nombre" name="nombre" class="form-control" value="@ViewBag.Paciente.NombrePaciente" />
+        }
+        else
+        {
+            <input type="text" id="nombre" name="nombre" class="form-control" />
+        }
+
+    </div>
+
+    <div class="col-md-3">
+        <label>Apellido Paterno</label>
+        @if (ViewBag.Paciente != null)
+        {
+            <input type="text" id="apePat" name="apePat" class="form-control" value="@ViewBag.Paciente.ApellidoPaterno" />
+        }
+        else
+        {
+            <input type="text" id="apePat" name="apePat" class="form-control" />
+        }
+
+    </div>
+
+    <div class="col-md-3">
+        <label>Apellido Materno</label>
+        @if (ViewBag.Paciente != null)
+        {
+            <input type="text" id="apeMat" name="apeMat" class="form-control" value="@ViewBag.Paciente.ApellidoMaterno" />
+        }
+        else
+        {
+            <input type="text" id="apeMat" name="apeMat" class="form-control" />
+        }
+
+    </div>
+
+    <div class="col-md-2">
+        <label>Género</label>
+        @if (ViewBag.Paciente != null)
+        {
+            @*<input type="text" id="generoP" name="generoP" class="form-control" value="@ViewBag.Paciente.Genero" />*@
+            <select type="text" id="generoP" name="generoP" class="form-control">
+                <option selected hidden> @ViewBag.Paciente.Genero</option>
+                <option>Femenino</option>
+                <option>Masculino</option>
+                <option>Otro</option>
+
+            </select>
+        }
+        else
+        {
+            <select type="text" id="generoP" name="generoP" class="form-control" required>
+                <option selected hidden>----</option>
+                <option>Femenino</option>
+                <option>Masculino</option>
+                <option>Otro</option>
+
+            </select>
+        }
+
+    </div>
+
+
+    <br>
+    <br>
+    <br />
+    <br />
+
+    <div class="col-md-2">
+        <label>Fecha Nacimiento</label>
+        @if (ViewBag.Paciente != null)
+        {
+            <input type="date" id="edadP" name="edadP" class="form-control" value="@ViewBag.Paciente.Edad.ToString("yyyy-MM-dd")" />
+        }
+        else
+        {
+            <input type="date" id="edadP" name="edadP" class="form-control" />
+        }
+
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+
+    <div class="col-md-2">
+        <a href="javascript:guardarPaciente()" class="btn btn-success">Guardar</a>
+    </div>
+</div>
